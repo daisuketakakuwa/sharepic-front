@@ -1,6 +1,12 @@
 <template>
   <v-app>
-    <v-app-bar app class="black white--text" height="50px">
+    <v-app-bar
+      app
+      absolute
+      elevate-on-scroll
+      class="black white--text"
+      height="50px"
+    >
       <h1 id="header-title" class="text-center ml-5">
         SHAREPIC
       </h1>

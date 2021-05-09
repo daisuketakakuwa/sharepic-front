@@ -4,7 +4,7 @@
       active-class="blue-grey lighten-5"
       :to="item.to"
       v-for="item in items"
-      :key="item"
+      :key="item.to"
       @click="goto(item.to)"
     >
       <v-icon>
