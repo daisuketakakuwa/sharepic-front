@@ -1,33 +1,43 @@
 <template>
   <v-container>
-    <image-form :is-exist-image-file.sync="isExistImageFile" />
-    <v-row>
-      <v-col cols="11">
-        <v-btn color="black white--text" @click="dialog = true"
-          ><v-icon>mdi-plus</v-icon>TAG</v-btn
-        >
-        <v-btn color="gray" @click="clear">クリア</v-btn>
-        <v-container class="d-flex flex-wrap justify-start" width="100vw">
-          <v-chip
-            class="mr-2 mt-2 white--text"
-            color="black"
-            v-for="tag in inputTags"
-            :key="tag"
-          >
-            {{ tag }}
-          </v-chip>
-        </v-container>
-      </v-col>
-    </v-row>
-    <tag-form-dialog
-      :dialog.sync="dialog"
-      :input-tag.sync="inputTag"
-      header-title="タグ追加"
-      ok-title="OK"
-      cancel-title="CANCEL"
-      @ok="addTag"
-    />
-    <v-textarea rows="2" outlined class="ma-2" label="説明(任意)"></v-textarea>
+    <v-card dark>
+      <v-card-text>
+        <image-form :is-exist-image-file.sync="isExistImageFile" />
+        <v-row>
+          <v-col class="mt-5" cols="11">
+            <v-btn color="primary white--text" @click="dialog = true"
+              ><v-icon>mdi-plus</v-icon>TAG</v-btn
+            >
+            <v-btn color="white black--text" @click="clear">クリア</v-btn>
+            <v-container class="d-flex flex-wrap justify-start" width="100vw">
+              <v-chip
+                class="mr-2 mt-2 white--text"
+                color="primary"
+                v-for="tag in inputTags"
+                :key="tag"
+              >
+                {{ tag }}
+              </v-chip>
+            </v-container>
+          </v-col>
+        </v-row>
+        <tag-form-dialog
+          :dialog.sync="dialog"
+          :input-tag.sync="inputTag"
+          header-title="タグ追加"
+          ok-title="OK"
+          cancel-title="CANCEL"
+          @ok="addTag"
+        />
+        <v-textarea
+          rows="2"
+          outlined
+          class="ma-2"
+          label="説明(任意)"
+        ></v-textarea>
+      </v-card-text>
+    </v-card>
+    <br />
     <v-row>
       <v-col cols="11" class="text-center"
         ><v-btn
