@@ -28,6 +28,8 @@ import ImageUtils from "@/domains/image/ImageUtils";
 @Component
 export default class ImageForm extends Vue {
   imageFile: File | null = null;
+  base64EncodedFile: any = "";
+  extension: string = "";
 
   imageBase64URI: string | ArrayBuffer | null = "";
 
@@ -43,6 +45,8 @@ export default class ImageForm extends Vue {
       if (file.name.lastIndexOf(".") <= 0) {
         return;
       }
+      // 拡張子取得
+      this.extension = file.name.substring(file.name.indexOf(".") + 1);
       // 縦幅横幅取得
       const picElement: any = new Image();
       picElement.addEventListener("load", () => {
@@ -68,16 +72,21 @@ export default class ImageForm extends Vue {
       fr.addEventListener("load", () => {
         // BASE64エンコード結果取得
         this.imageBase64URI = fr.result;
+        this.base64EncodedFile = fr.result
+          ?.toString()
+          .replace(/data:.*\/.*;base64,/, "");
         this.enableUploadImageFile = true;
         // 縦幅横幅取得用に格納
         picElement.src = fr.result;
         // emit
-        this.$emit("captureImage", this.imageBase64URI);
+        this.$emit("captureImage", this.base64EncodedFile, this.extension);
       });
     } else {
       this.pictureWidth = 0;
       this.pictureHeight = 0;
       this.imageBase64URI = "";
+      this.base64EncodedFile = "";
+      this.extension = "";
       this.imageFile = null;
       // emit
       this.$emit("deleteImage");

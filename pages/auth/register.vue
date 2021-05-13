@@ -34,6 +34,7 @@
           @ok="addTag"
         />
         <v-textarea
+          v-model="inputDescription"
           rows="2"
           outlined
           class="ma-2"
@@ -58,19 +59,26 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from "nuxt-property-decorator";
+import ServiceFactory from "@/domains/factory/ServiceFactory";
+import CardService from "@/domains/card/CardService";
+import Card from "@/domains/card/Card";
 
 @Component
 export default class Register extends Vue {
+  cardService!: CardService;
+
   inputTag: string = "";
   inputTags: string[] = [];
-
+  inputDescription = "";
+  extension: string = "";
   targetImageFile: string = "";
-
   isExistImageFile: boolean = false;
-
   dialog: boolean = false;
-
   isUploadable: boolean = false;
+
+  async fetch() {
+    this.cardService = await ServiceFactory.getCardService();
+  }
 
   addTag() {
     if (this.inputTags.filter(tag => tag == "#" + this.inputTag).length == 0) {
@@ -89,13 +97,27 @@ export default class Register extends Vue {
     this.isUploadable = this.inputTags.length > 0 && this.isExistImageFile;
   }
 
-  captureImage(file: string) {
+  captureImage(file: string, extension: string) {
     this.targetImageFile = file;
+    this.extension = extension;
   }
   deleteImage() {
     this.targetImageFile = "";
+    this.extension = "";
   }
 
-  upload() {}
+  upload() {
+    this.cardService.uploadCard(
+      new Card(
+        "",
+        this.targetImageFile,
+        this.extension,
+        this.inputTags,
+        this.inputDescription,
+        "",
+        "testuser"
+      )
+    );
+  }
 }
 </script>
