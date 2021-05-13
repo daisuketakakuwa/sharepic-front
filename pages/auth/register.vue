@@ -2,7 +2,11 @@
   <v-container>
     <v-card dark>
       <v-card-text>
-        <image-form :is-exist-image-file.sync="isExistImageFile" />
+        <image-form
+          :is-exist-image-file.sync="isExistImageFile"
+          @captureImage="captureImage"
+          @deleteImage="deleteImage"
+        />
         <v-row>
           <v-col class="mt-5" cols="11">
             <v-btn color="primary white--text" @click="dialog = true"
@@ -60,6 +64,8 @@ export default class Register extends Vue {
   inputTag: string = "";
   inputTags: string[] = [];
 
+  targetImageFile: string = "";
+
   isExistImageFile: boolean = false;
 
   dialog: boolean = false;
@@ -81,6 +87,13 @@ export default class Register extends Vue {
   @Watch("isExistImageFile")
   checkInput() {
     this.isUploadable = this.inputTags.length > 0 && this.isExistImageFile;
+  }
+
+  captureImage(file: string) {
+    this.targetImageFile = file;
+  }
+  deleteImage() {
+    this.targetImageFile = "";
   }
 
   upload() {}

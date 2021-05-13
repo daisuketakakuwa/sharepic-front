@@ -23,10 +23,12 @@
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Watch } from "nuxt-property-decorator";
+import ImageUtils from "@/domains/image/ImageUtils";
 
 @Component
 export default class ImageForm extends Vue {
   imageFile: File | null = null;
+
   imageBase64URI: string | ArrayBuffer | null = "";
 
   @PropSync("isExistImageFile", { type: Boolean, default: false })
@@ -58,7 +60,10 @@ export default class ImageForm extends Vue {
       });
 
       const fr = new FileReader();
-      fr.readAsDataURL(file);
+      // 画像ファイルを圧縮する
+      const compFile = await ImageUtils.getCompressImageFileAsync(file);
+      // 圧縮した画像ファイルを読み込む
+      fr.readAsDataURL(compFile);
       // 読み込み処理(load)が完了するたびに実行されるイベント(関数)を登録
       fr.addEventListener("load", () => {
         // BASE64エンコード結果取得
@@ -66,12 +71,16 @@ export default class ImageForm extends Vue {
         this.enableUploadImageFile = true;
         // 縦幅横幅取得用に格納
         picElement.src = fr.result;
+        // emit
+        this.$emit("captureImage", this.imageBase64URI);
       });
     } else {
       this.pictureWidth = 0;
       this.pictureHeight = 0;
       this.imageBase64URI = "";
       this.imageFile = null;
+      // emit
+      this.$emit("deleteImage");
     }
   }
 }
