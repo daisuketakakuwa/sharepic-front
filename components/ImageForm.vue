@@ -17,6 +17,10 @@
           :src="imageBase64URI"
           contain
         />
+        <span class="text-center" v-if="!enableUploadImageFile">
+          ※こちらに画像が表示されます。<br />
+          ※高画質の写真の表示には数秒かかります。</span
+        >
       </v-col>
     </v-row>
   </v-container>
@@ -87,6 +91,7 @@ export default class ImageForm extends Vue {
       this.imageBase64URI = "";
       this.base64EncodedFile = "";
       this.extension = "";
+      this.enableUploadImageFile = false;
       this.imageFile = null;
       // emit
       this.$emit("deleteImage");
