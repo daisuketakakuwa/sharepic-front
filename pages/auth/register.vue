@@ -55,6 +55,16 @@
         ></v-col
       >
     </v-row>
+    <app-dialog
+      :dialog="hasUploaded"
+      :max-width="new String(400)"
+      :header-title="`NOTIFICATION`"
+      :ok-title="`閉じる`"
+      :hideCancel="true"
+      @ok="backToHome"
+    >
+      投稿に成功しました。
+    </app-dialog>
   </v-container>
 </template>
 <script lang="ts">
@@ -75,6 +85,7 @@ export default class Register extends Vue {
   isExistImageFile: boolean = false;
   dialog: boolean = false;
   isUploadable: boolean = false;
+  hasUploaded: boolean = false;
 
   async fetch() {
     this.cardService = await ServiceFactory.getCardService();
@@ -106,18 +117,23 @@ export default class Register extends Vue {
     this.extension = "";
   }
 
-  upload() {
+  async upload() {
     this.cardService.uploadCard(
       new Card(
         "",
         this.targetImageFile,
         this.extension,
-        this.inputTags,
+        this.inputTags.map(t => t.replace("#", "")),
         this.inputDescription,
         "",
         "testuser"
       )
     );
+    this.hasUploaded = true;
+  }
+
+  backToHome() {
+    this.$router.push("/auth/home");
   }
 }
 </script>
