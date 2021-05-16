@@ -118,7 +118,7 @@ export default class Register extends Vue {
   }
 
   async upload() {
-    this.cardService.uploadCard(
+    this.cardService.upload(
       new Card(
         "",
         this.targetImageFile,

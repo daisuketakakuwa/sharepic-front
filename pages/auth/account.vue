@@ -34,9 +34,17 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "nuxt-property-decorator";
+import ServiceFactory from "@/domains/factory/ServiceFactory";
+import CardService from "@/domains/card/CardService";
+import Card from "@/domains/card/Card";
+import CardForAccount from "@/domains/card/CardForAccount";
 
 @Component
 export default class Account extends Vue {
+  cardService!: CardService;
+
+  cardForAccount!: CardForAccount;
+
   dialog: boolean = false;
   detailSrc: string = "";
   detailTags: any = [];
@@ -44,67 +52,15 @@ export default class Account extends Vue {
   detailPostDate: string = "";
   detailPostUser: string = "";
 
-  displayCards: any[] = [];
-  favoriteCards: any[] = [];
-  yourCards: any[] = [];
+  displayCards: Card[] = [];
+  favoriteCards: Card[] = [];
+  yourCards: Card[] = [];
 
-  fetch() {
-    this.favoriteCards = [
-      {
-        tag: ["一眼", "自然"],
-        src:
-          "https://xxsharepicxx.s3-ap-northeast-1.amazonaws.com/pictures/ucchiiii_20201121012517.JPG"
-      },
-      {
-        tag: ["一眼", "自然"],
-        src:
-          "https://xxsharepicxx.s3-ap-northeast-1.amazonaws.com/pictures/ucchiiii_20201121012627.png"
-      },
-      {
-        tag: ["一眼", "自然"],
-        src:
-          "https://xxsharepicxx.s3-ap-northeast-1.amazonaws.com/pictures/ucchiiii_20201121012738.jpg"
-      },
-      {
-        tag: ["一眼", "自然"],
-        src:
-          "https://xxsharepicxx.s3-ap-northeast-1.amazonaws.com/pictures/ucchiiii_20201121012836.jpg"
-      },
-      {
-        tag: ["一眼", "自然"],
-        src:
-          "https://xxsharepicxx.s3-ap-northeast-1.amazonaws.com/pictures/ucchiiii_20201121012913.jpg"
-      }
-    ];
-
-    this.yourCards = [
-      {
-        tag: ["夏"],
-        src:
-          "https://xxsharepicxx.s3-ap-northeast-1.amazonaws.com/pictures/takakuwa_20201121030733.jpg"
-      },
-      {
-        tag: ["一眼", "自然"],
-        src:
-          "https://xxsharepicxx.s3-ap-northeast-1.amazonaws.com/pictures/takakuwa_20201121030848.jpg"
-      },
-      {
-        tag: ["一眼", "自然"],
-        src:
-          "https://xxsharepicxx.s3-ap-northeast-1.amazonaws.com/pictures/takakuwa_20201121030927.jpg"
-      },
-      {
-        tag: ["一眼", "自然"],
-        src:
-          "https://xxsharepicxx.s3-ap-northeast-1.amazonaws.com/pictures/takakuwa_20201121031021.jpg"
-      },
-      {
-        tag: ["一眼", "自然"],
-        src:
-          "https://xxsharepicxx.s3-ap-northeast-1.amazonaws.com/pictures/takakuwa_20201121031100.jpg"
-      }
-    ];
-
+  async fetch() {
+    this.cardService = await ServiceFactory.getCardService();
+    this.cardForAccount = await this.cardService.getCardsForAccount();
+    this.favoriteCards = this.cardForAccount.favoriteCards;
+    this.yourCards = this.cardForAccount.yourCards;
     this.displayCards = this.yourCards;
   }
 
@@ -120,9 +76,9 @@ export default class Account extends Vue {
     this.dialog = true;
     this.detailSrc = card.src;
     this.detailTags = card.tag;
-    this.detailDescription = "上高地でとった写真";
-    this.detailPostDate = "2021-05-07";
-    this.detailPostUser = "田中";
+    this.detailDescription = card.description;
+    this.detailPostDate = card.postDate;
+    this.detailPostUser = card.postUser;
   }
 }
 </script>

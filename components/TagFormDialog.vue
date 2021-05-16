@@ -41,10 +41,13 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, PropSync, Watch } from "nuxt-property-decorator";
+import ServiceFactory from "@/domains/factory/ServiceFactory";
+import CardService from "@/domains/card/CardService";
+
 @Component
 export default class TagFormDialog extends Vue {
-  // TODO APIで一覧取得する
-  tags: string[] = ["自然", "一眼", "TRAVEL"];
+  cardService!: CardService;
+  tags: string[] = [];
   addNewTag: boolean = false;
   activateOkBtn: boolean = false;
 
@@ -89,6 +92,11 @@ export default class TagFormDialog extends Vue {
 
   @Prop({ type: Boolean, default: false })
   persistent!: boolean;
+
+  async fetch() {
+    this.cardService = await ServiceFactory.getCardService();
+    this.tags = await this.cardService.getTags();
+  }
 
   @Watch("addNewTag")
   checkInput() {

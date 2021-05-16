@@ -18,7 +18,7 @@
           contain
         />
         <span class="text-center" v-if="!enableUploadImageFile">
-          ※こちらに画像が表示されます。<br />
+          ※こちらに写真が表示されます。<br />
           ※高画質の写真の表示には数秒かかります。</span
         >
       </v-col>

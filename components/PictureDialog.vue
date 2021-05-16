@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="syncedDisplayDialog" width="90vw" height="90vh">
-    <v-card>
+    <v-card @click="close">
       <v-img :src="syncedSrc" contain />
       <v-card-text>
         <br />
@@ -32,5 +32,9 @@ export default class PictureDialog extends Vue {
   syncedPostDate!: string;
   @PropSync("detailPostUser", { type: String, default: "" })
   syncedPostUser!: string;
+
+  close() {
+    this.syncedDisplayDialog = false;
+  }
 }
 </script>

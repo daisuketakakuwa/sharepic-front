@@ -23,7 +23,7 @@ export default class NavagateMenu extends Vue {
     { icon: "mdi-home", to: "/auth/home" },
     {
       icon: "mdi-card-search",
-      to: "/auth/search"
+      to: "/auth/_tag"
     },
     { icon: "mdi-plus-box-outline", to: "/auth/register" },
     { icon: "mdi-account", to: "/auth/account" }
