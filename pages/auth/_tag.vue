@@ -19,12 +19,12 @@
       </v-row>
       <v-row v-if="!hasSearched && !$fetchState.pending">
         <v-col class="text-center text-h5" cols="12">
-          <span id="font">FIND A GOOD PICTURE</span>
+          <span class="font">FIND A GOOD PICTURE</span>
         </v-col>
       </v-row>
       <v-row v-if="hasSearched && cards.length == 0">
         <v-col class="text-center text-h5" cols="12">
-          <span id="font">NO SEARCH RESULT</span>
+          <span class="font">NO SEARCH RESULT</span>
         </v-col>
       </v-row>
     </v-container>
@@ -105,7 +105,8 @@ export default class Search extends Vue {
 </script>
 
 <style scoped>
-#font {
+.font {
   font-family: Bradley Hand ITC;
+  font-weight: 900;
 }
 </style>

@@ -4,15 +4,21 @@
       <v-tabs>
         <v-tabs-slider color="primary" />
         <v-tab @click="switchGenre('yourPost')"
-          ><span class="menu-item">YOUR POST</span></v-tab
+          ><span class="font">YOUR POST</span></v-tab
         >
         <v-tab @click="switchGenre('yourFavorite')"
-          ><span class="menu-item">YOUR FAVORITE</span></v-tab
+          ><span class="font">YOUR FAVORITE</span></v-tab
         >
       </v-tabs>
     </v-container>
     <v-container class="d-flex flex-wrap justify-start" width="100vw">
+      <v-row v-if="!yourPicturesDialog">
+        <v-col cols="12" class="font coming-soon text-center">
+          COMING SOON
+        </v-col>
+      </v-row>
       <v-card
+        v-else
         :outlined="false"
         class="ma-2"
         v-for="card in displayCards"
@@ -45,6 +51,8 @@ export default class Account extends Vue {
 
   cardForAccount!: CardForAccount;
 
+  yourPicturesDialog: boolean = false;
+
   dialog: boolean = false;
   detailSrc: string = "";
   detailTags: any = [];
@@ -62,20 +70,23 @@ export default class Account extends Vue {
     this.favoriteCards = this.cardForAccount.favoriteCards;
     this.yourCards = this.cardForAccount.yourCards;
     this.displayCards = this.yourCards;
+    this.yourPicturesDialog = true;
   }
 
   switchGenre(genre: string) {
     if (genre === "yourPost") {
       this.displayCards = this.yourCards;
+      this.yourPicturesDialog = true;
     } else if (genre === "yourFavorite") {
       this.displayCards = this.favoriteCards;
+      this.yourPicturesDialog = false;
     }
   }
 
   showDialog(card: any) {
     this.dialog = true;
     this.detailSrc = card.src;
-    this.detailTags = card.tag;
+    this.detailTags = card.tags;
     this.detailDescription = card.description;
     this.detailPostDate = card.postDate;
     this.detailPostUser = card.postUser;
@@ -84,8 +95,12 @@ export default class Account extends Vue {
 </script>
 
 <style scoped>
-.menu-item {
+.font {
   font-family: Bradley Hand ITC;
   font-weight: 900;
+}
+
+.coming-soon {
+  font-size: 30px;
 }
 </style>

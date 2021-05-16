@@ -1,6 +1,7 @@
 <template>
   <v-container class="d-flex flex-wrap justify-start" width="100vw">
     <v-card
+      dark
       outlined
       elevation="4"
       class="ma-2"
@@ -9,7 +10,7 @@
       @click="moveToSearch(card.tag)"
     >
       <v-card-title class="card-title">{{ card.tag }}</v-card-title>
-      <v-img class="white--text" width="350" :src="card.src" />
+      <v-img class="white--text" width="350" height="200" :src="card.src" />
     </v-card>
   </v-container>
 </template>
