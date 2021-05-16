@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!$fetchState.pending">
     <v-container>
       <v-tabs>
         <v-tabs-slider color="primary" />
@@ -17,16 +17,26 @@
           COMING SOON
         </v-col>
       </v-row>
-      <v-card
-        v-else
-        :outlined="false"
-        class="ma-2"
-        v-for="card in displayCards"
-        :key="card.src"
-        @click="showDialog(card)"
-      >
-        <v-img width="350" :src="card.src" />
-      </v-card>
+      <template v-else>
+        <v-row>
+          <v-col
+            v-if="displayCards.length == 0"
+            class="font coming-soon text-center"
+            cols="12"
+          >
+            WHY DON'T YOU POST?
+          </v-col>
+        </v-row>
+        <v-card
+          :outlined="false"
+          class="ma-2"
+          v-for="card in displayCards"
+          :key="card.src"
+          @click="showDialog(card)"
+        >
+          <v-img width="350" :src="card.src" />
+        </v-card>
+      </template>
     </v-container>
     <picture-dialog
       :show-dialog.sync="dialog"
@@ -101,6 +111,6 @@ export default class Account extends Vue {
 }
 
 .coming-soon {
-  font-size: 30px;
+  font-size: 25px;
 }
 </style>
