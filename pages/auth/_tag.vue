@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!$fetchState.pending">
     <v-container>
       <v-row justify="center">
         <v-col cols="4">

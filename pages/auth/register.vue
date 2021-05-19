@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="!$fetchState.pending">
     <v-card dark>
       <v-card-text>
         <image-form

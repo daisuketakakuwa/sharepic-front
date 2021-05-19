@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation app grow>
+  <v-bottom-navigation v-if="showMenu" app grow>
     <v-btn
       active-class="blue-grey lighten-5"
       :to="item.to"
@@ -15,10 +15,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "nuxt-property-decorator";
+import { Component, Vue, PropSync } from "nuxt-property-decorator";
 
 @Component
 export default class NavagateMenu extends Vue {
+  @PropSync("showNavigateMenu", { type: Boolean, default: false })
+  showMenu!: boolean;
+
   items = [
     { icon: "mdi-home", to: "/auth/home" },
     {

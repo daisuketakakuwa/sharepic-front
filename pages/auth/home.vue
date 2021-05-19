@@ -1,5 +1,9 @@
 <template>
-  <v-container class="d-flex flex-wrap justify-start" width="100vw">
+  <v-container
+    v-if="!$fetchState.pending"
+    class="d-flex flex-wrap justify-start"
+    width="100vw"
+  >
     <v-card
       dark
       outlined
