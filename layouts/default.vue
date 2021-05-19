@@ -16,7 +16,9 @@
           </v-col>
           <v-col v-if="loggedIn" cols="6">
             <h3 class="font ml-16">
-              <v-btn color="black" class="white--text mb-2">LOGOUT</v-btn>
+              <v-btn color="black" class="white--text mb-2" @click="logout"
+                >LOGOUT</v-btn
+              >
             </h3>
           </v-col>
         </v-row>
@@ -35,6 +37,11 @@ import { Vue, Component, Watch } from "nuxt-property-decorator";
 @Component
 export default class Default extends Vue {
   loggedIn: boolean = false;
+
+  logout() {
+    this.loggedIn = false;
+    this.$router.push("/");
+  }
 
   @Watch("$route")
   changedRoute() {

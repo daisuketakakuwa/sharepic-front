@@ -9,41 +9,8 @@
         ><span class="font">新規登録</span></v-tab
       >
     </v-tabs>
-    <v-container v-if="registerTab">
-      <v-row>
-        <v-col class="mt-5" cols="12"
-          ><v-text-field label="USERNAME" outlined />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12"><v-text-field label="PASSWORD" outlined /> </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12"
-          ><v-text-field label="PASSWORD(再確認)" outlined />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" class="text-center">
-          <v-btn x-large color="primary">新規登録</v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-container v-if="loginTab">
-      <v-row>
-        <v-col class="mt-5" cols="12"
-          ><v-text-field label="USERNAME" outlined />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12"><v-text-field label="PASSWORD" outlined /> </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" class="text-center">
-          <v-btn x-large color="primary" @click="login">ログイン</v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
+    <register-form :show-register-form="registerTab" />
+    <login-form :show-login-form="loginTab" />
   </v-container>
 </template>
 
@@ -67,10 +34,6 @@ export default class Index extends Vue {
   switchRegister() {
     this.registerTab = true;
     this.loginTab = false;
-  }
-
-  login() {
-    this.$router.push("/auth/home");
   }
 }
 </script>
