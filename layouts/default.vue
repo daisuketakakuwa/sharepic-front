@@ -33,6 +33,7 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from "nuxt-property-decorator";
+import axios from "@/domains/factory/AxiosFactory";
 
 @Component
 export default class Default extends Vue {
@@ -40,6 +41,8 @@ export default class Default extends Vue {
 
   logout() {
     this.loggedIn = false;
+    // トークンを空にする
+    axios.defaults.headers.common.Authorization = "";
     this.$router.push("/");
   }
 

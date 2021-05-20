@@ -38,7 +38,15 @@
         >
       </v-col>
     </v-row>
-    <app-dialog :dialog="showDialog">
+    <app-dialog
+      :dialog.sync="registerDialog"
+      :max-width="new String(750)"
+      :hide-cancel="registerResult"
+      :hide-ok="!registerResult"
+      @ok="home"
+      ok-title="閉じる"
+      header-title="通知"
+    >
       {{ dialogMessage }}
     </app-dialog>
   </v-container>
@@ -46,23 +54,50 @@
 
 <script lang="ts">
 import { Vue, Component, PropSync, Watch } from "nuxt-property-decorator";
+import User from "@/domains/user/User";
+import ServiceFactory from "@/domains/factory/ServiceFactory";
+import AuthService from "@/domains/auth/AuthService";
 
 @Component
 export default class RegisterForm extends Vue {
+  authService!: AuthService;
+
   @PropSync("showRegisterForm", { type: Boolean, default: false })
   syncedShowRegisterForm!: boolean;
 
   activateBtn = false;
+  registerDialog = false;
+  registerResult = false;
 
-  showDialog = false;
   dialogMessage = "";
 
   username = "";
   password = "";
   passwordForCheck = "";
 
-  register() {
-    this.showDialog = true;
+  async fetch() {
+    this.authService = await ServiceFactory.getAuthService();
+  }
+
+  async register() {
+    const result = await this.authService.register(
+      new User(this.username, this.password)
+    );
+    this.registerDialog = true;
+    if (!result) {
+      this.dialogMessage = "アカウント登録に成功しました。";
+      this.registerResult = true;
+    } else {
+      this.dialogMessage = result;
+      this.registerResult = false;
+      this.username = "";
+      this.password = "";
+      this.passwordForCheck = "";
+    }
+  }
+
+  home() {
+    this.$router.push("/auth/home");
   }
 
   @Watch("username")
@@ -75,10 +110,6 @@ export default class RegisterForm extends Vue {
       this.password.length >= 6 && this.password.length <= 30;
     const passwordDoubleCheckOk: boolean =
       this.password === this.passwordForCheck;
-
-    console.log(usernameOk);
-    console.log(passwordOk);
-    console.log(passwordDoubleCheckOk);
 
     if (usernameOk && passwordOk && passwordDoubleCheckOk) {
       this.activateBtn = true;
