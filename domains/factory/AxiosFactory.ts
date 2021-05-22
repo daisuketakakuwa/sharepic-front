@@ -7,7 +7,6 @@ class AxiosFactory {
 
     static get axios() {
         if (!this.initialized) {
-            axios.defaults.baseURL = "http://localhost:8081";
             this.initialized = true;
         }
         return axios;

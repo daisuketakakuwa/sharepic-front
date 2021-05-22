@@ -31,6 +31,7 @@
 <script lang="ts">
 import { Vue, Component, PropSync, Watch } from "nuxt-property-decorator";
 import User from "@/domains/user/User";
+import axios from "@/domains/factory/AxiosFactory";
 import ServiceFactory from "@/domains/factory/ServiceFactory";
 import AuthService from "@/domains/auth/AuthService";
 

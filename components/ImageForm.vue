@@ -17,7 +17,11 @@
           :src="imageBase64URI"
           contain
         />
-        <span class="text-center" v-if="!enableUploadImageFile">
+        <loading-spinner :image-uploading="imageUploading" />
+        <span
+          class="text-center"
+          v-if="!imageUploading && !enableUploadImageFile"
+        >
           ※こちらに写真が表示されます。<br />
           ※高画質の写真の表示には数秒かかります。</span
         >
@@ -40,11 +44,14 @@ export default class ImageForm extends Vue {
   @PropSync("isExistImageFile", { type: Boolean, default: false })
   enableUploadImageFile!: boolean;
 
+  imageUploading = false;
+
   pictureWidth: number = 0;
   pictureHeight: number = 0;
 
   @Watch("imageFile")
   async change(file: File) {
+    this.imageUploading = true;
     if (file !== undefined && file !== null) {
       if (file.name.lastIndexOf(".") <= 0) {
         return;
@@ -54,8 +61,6 @@ export default class ImageForm extends Vue {
       // 縦幅横幅取得
       const picElement: any = new Image();
       picElement.addEventListener("load", () => {
-        console.log("縦幅：" + picElement.naturalHeight);
-        console.log("横幅：" + picElement.naturalWidth);
         // 横長写真の場合、w:600 h:360  固定
         // 縦長写真の場合、w:600 h:1000 固定
         if (picElement.naturalHeight < picElement.naturalWidth) {
@@ -96,6 +101,7 @@ export default class ImageForm extends Vue {
       // emit
       this.$emit("deleteImage");
     }
+    this.imageUploading = false;
   }
 }
 </script>
