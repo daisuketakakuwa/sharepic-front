@@ -15,7 +15,9 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "nuxt-property-decorator";
+import axios from "@/domains/factory/AxiosFactory";
+import { Component, Vue } from "nuxt-property-decorator";
+import UniversalCookie from "universal-cookie";
 
 @Component
 export default class Index extends Vue {
@@ -23,6 +25,14 @@ export default class Index extends Vue {
   loginTab: boolean = false;
 
   fetch() {
+    // ブラウザにCookie(JWTトークン)がある場合、画面遷移する
+    const cookie = new UniversalCookie();
+    const token = cookie.get("token");
+    if (token) {
+      axios.defaults.headers.common.Authorization = token;
+      this.$router.push("/auth/home");
+    }
+
     this.loginTab = true;
   }
 

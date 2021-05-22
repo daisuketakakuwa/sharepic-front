@@ -2,7 +2,8 @@ import axios from 'axios';
 
 class AxiosFactory {
 
-    private static initialized = false;
+  private static initialized = false;
+
 
     static get axios() {
         if (!this.initialized) {

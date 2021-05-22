@@ -34,6 +34,7 @@
 <script lang="ts">
 import { Vue, Component, Watch } from "nuxt-property-decorator";
 import axios from "@/domains/factory/AxiosFactory";
+import UniversalCookie from "universal-cookie";
 
 @Component
 export default class Default extends Vue {
@@ -43,6 +44,9 @@ export default class Default extends Vue {
     this.loggedIn = false;
     // トークンを空にする
     axios.defaults.headers.common.Authorization = "";
+    // Cookieを削除
+    const cookie = new UniversalCookie();
+    cookie.remove("token");
     this.$router.push("/");
   }
 

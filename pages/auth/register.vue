@@ -126,7 +126,7 @@ export default class Register extends Vue {
         this.inputTags.map(t => t.replace("#", "")),
         this.inputDescription,
         "",
-        "testuser"
+        ""
       )
     );
     this.hasUploaded = true;
