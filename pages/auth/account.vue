@@ -27,15 +27,17 @@
             WHY DON'T YOU POST?
           </v-col>
         </v-row>
-        <v-card
-          :outlined="false"
-          class="ma-2"
-          v-for="card in displayCards"
-          :key="card.src"
-          @click="showDialog(card)"
-        >
-          <v-img width="350" :src="card.src" />
-        </v-card>
+        <v-row>
+          <v-card
+            :outlined="false"
+            class="ma-2"
+            v-for="card in displayCards"
+            :key="card.src"
+            @click="showDialog(card)"
+          >
+            <v-img width="350" :src="card.src" />
+          </v-card>
+        </v-row>
       </template>
     </v-container>
     <picture-dialog
