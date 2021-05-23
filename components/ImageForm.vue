@@ -56,6 +56,8 @@ export default class ImageForm extends Vue {
   pictureWidth: number = 0;
   pictureHeight: number = 0;
 
+  // TODO 圧縮処理はサーバ側で実装する。
+
   @Watch("imageFile")
   async change(file: File) {
     this.imageUploading = true;
@@ -87,23 +89,30 @@ export default class ImageForm extends Vue {
         this.imageBase64URI = readerForPreview.result;
         // 縦幅横幅取得用に格納
         picElement.src = readerForPreview.result;
-      });
-
-      // 画像ファイルを圧縮する
-      const readerForUpload = new FileReader();
-      const compFile = await ImageUtils.getCompressImageFileAsync(file);
-      // 圧縮した画像ファイルを読み込む
-      readerForUpload.readAsDataURL(compFile);
-      // 読み込み処理(load)が完了するたびに実行されるイベント(関数)を登録
-      readerForUpload.addEventListener("load", () => {
         // BASE64エンコード結果取得
-        this.base64EncodedFile = readerForUpload.result
+        this.base64EncodedFile = readerForPreview.result
           ?.toString()
           .replace(/data:.*\/.*;base64,/, "");
         this.enableUploadImageFile = true;
         // emit
         this.$emit("captureImage", this.base64EncodedFile, this.extension);
       });
+
+      // // 画像ファイルを圧縮する
+      // const readerForUpload = new FileReader();
+      // const compFile = await ImageUtils.getCompressImageFileAsync(file);
+      // // 圧縮した画像ファイルを読み込む
+      // readerForUpload.readAsDataURL(compFile);
+      // // 読み込み処理(load)が完了するたびに実行されるイベント(関数)を登録
+      // readerForUpload.addEventListener("load", () => {
+      //   // BASE64エンコード結果取得
+      //   this.base64EncodedFile = readerForUpload.result
+      //     ?.toString()
+      //     .replace(/data:.*\/.*;base64,/, "");
+      //   this.enableUploadImageFile = true;
+      //   // emit
+      //   this.$emit("captureImage", this.base64EncodedFile, this.extension);
+      // });
     } else {
       this.pictureWidth = 0;
       this.pictureHeight = 0;
