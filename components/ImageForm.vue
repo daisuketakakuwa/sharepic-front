@@ -6,7 +6,7 @@
           v-model="imageFile"
           prepend-icon="mdi-camera"
           label="投稿する写真"
-          accept="image/png, image/PNG, image/jpg, image/jpeg, image/JPG, image/JPEG"
+          accept="image/*"
         />
       </v-col>
       <v-col cols="12">
