@@ -30,7 +30,7 @@
         <v-row>
           <v-card
             :outlined="false"
-            class="ma-2"
+            class="ma-2 noBorder"
             v-for="card in displayCards"
             :key="card.src"
             @click="showDialog(card)"
@@ -114,5 +114,9 @@ export default class Account extends Vue {
 
 .coming-soon {
   font-size: 25px;
+}
+
+.noBorder {
+  border: none;
 }
 </style>

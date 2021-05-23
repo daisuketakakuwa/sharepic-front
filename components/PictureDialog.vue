@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="syncedDisplayDialog" width="90vw" height="90vh">
+  <v-dialog v-model="syncedDisplayDialog" max-width="450px" max-height="90vh">
     <v-card @click="close">
       <v-img :src="syncedSrc" contain />
       <v-card-text>
@@ -16,7 +16,7 @@
   </v-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync } from "nuxt-property-decorator";
+import { Component, PropSync, Vue } from "nuxt-property-decorator";
 
 @Component
 export default class PictureDialog extends Vue {

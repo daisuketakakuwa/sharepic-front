@@ -25,6 +25,10 @@ export default class Index extends Vue {
   loginTab: boolean = false;
 
   fetch() {
+    this.loginTab = true;
+  }
+
+  mounted() {
     // ブラウザにCookie(JWTトークン)がある場合、画面遷移する
     const cookie = new UniversalCookie();
     const token = cookie.get("token");
@@ -32,8 +36,6 @@ export default class Index extends Vue {
       axios.defaults.headers.common.Authorization = token;
       this.$router.push("/auth/home");
     }
-
-    this.loginTab = true;
   }
 
   switchLogin() {
