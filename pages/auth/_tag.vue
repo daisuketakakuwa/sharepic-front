@@ -3,14 +3,13 @@
     <v-container>
       <v-row justify="center">
         <v-col cols="4">
-          <v-select v-model="inputTag" :items="tags" label="タグ名" outlined>
-          </v-select>
+          <v-select v-model="inputTag" :items="tags" label="タグ名" />
         </v-col>
-        <v-col cols="5">
-          <v-text-field v-model="inputFreeword" outlined label="検索" />
+        <v-col cols="4">
+          <v-select v-model="inputUsername" :items="names" label="ユーザー名" />
         </v-col>
         <v-col cols="2">
-          <v-btn block dark height="55" @click="search">
+          <v-btn block dark height="45" @click="search">
             <v-icon>
               mdi-magnify
             </v-icon>
@@ -54,15 +53,17 @@ import { Component, Vue } from "nuxt-property-decorator";
 import ServiceFactory from "@/domains/factory/ServiceFactory";
 import CardService from "@/domains/card/CardService";
 import Card from "@/domains/card/Card";
+import CardForSearch from "@/domains/card/CardForSearch";
 
 @Component
 export default class Search extends Vue {
   cardService!: CardService;
   cards: Card[] = [];
   tags: string[] = [];
+  names: string[] = [];
 
   inputTag = "";
-  inputFreeword = "";
+  inputUsername = "";
 
   dialog: boolean = false;
   hasSearched: boolean = false;
@@ -74,8 +75,11 @@ export default class Search extends Vue {
 
   async fetch() {
     this.cardService = await ServiceFactory.getCardService();
-    this.tags = await this.cardService.getTags();
+    const tagsnames: CardForSearch = await this.cardService.getTagsAndNames();
+    this.tags = tagsnames.tags;
+    this.names = tagsnames.names;
     this.tags.push("※未指定");
+    this.names.push("※未指定");
 
     // routerから「タグ」がわたってきている場合、タグで検索処理を実行する
     if (this.$route.params.tag !== "_tag") {
@@ -88,7 +92,7 @@ export default class Search extends Vue {
   async search() {
     this.cards = await this.cardService.search(
       this.inputTag,
-      this.inputFreeword
+      this.inputUsername
     );
     this.hasSearched = true;
   }

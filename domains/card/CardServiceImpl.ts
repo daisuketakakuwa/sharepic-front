@@ -7,9 +7,13 @@ export default class CardServiceImpl implements CardService {
     async upload(card: Card) {
         await axios.put("/card/upload", card);
     }
-
+    
     async getTags() {
         return (await axios.get("/card/tags")).data;
+    }
+
+    async getTagsAndNames() {
+        return (await axios.get("/card/tags-names")).data;
     }
 
     async search(tag: string, freeword: string) {
