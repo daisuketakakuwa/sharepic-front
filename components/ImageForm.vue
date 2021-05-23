@@ -17,21 +17,6 @@
           :src="imageBase64URI"
           contain
         />
-
-        <div
-          v-if="imageUploading"
-          class="d-flex flex-wrap align-center  text-center"
-        >
-          <loading-spinner />
-          <span>画像ファイルを圧縮中です......</span>
-        </div>
-
-        <div
-          class="text-center"
-          v-if="!imageUploading && !enableUploadImageFile"
-        >
-          ※こちらに写真が表示されます。
-        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -53,10 +38,8 @@ export default class ImageForm extends Vue {
 
   imageUploading = false;
 
-  pictureWidth: number = 0;
-  pictureHeight: number = 0;
-
-  // TODO 圧縮処理はサーバ側で実装する。
+  pictureWidth: number = 360;
+  pictureHeight: number = 360;
 
   @Watch("imageFile")
   async change(file: File) {
@@ -67,55 +50,25 @@ export default class ImageForm extends Vue {
       }
       // 拡張子取得
       this.extension = file.name.substring(file.name.indexOf(".") + 1);
-      // 縦幅横幅取得
-      const picElement: any = new Image();
-      picElement.addEventListener("load", () => {
-        // 横長写真の場合、w:600 h:360  固定
-        // 縦長写真の場合、w:600 h:1000 固定
-        if (picElement.naturalHeight < picElement.naturalWidth) {
-          this.pictureHeight = 360;
-          this.pictureWidth = 360;
-        } else {
-          this.pictureHeight = 600;
-          this.pictureWidth = 360;
-        }
-      });
 
-      // プレビュー用の写真を読み込む
+      // プレビュー用にURLを読み込む
+      const url = URL.createObjectURL(file);
+      console.log(url);
+      this.imageBase64URI = url;
+
+      // アップロード用にBASE64エンコード処理を行う
       const readerForPreview = new FileReader();
-      readerForPreview.readAsDataURL(file);
+      const compFile = await ImageUtils.getCompressImageFileAsync(file);
+      readerForPreview.readAsDataURL(compFile);
       readerForPreview.addEventListener("load", () => {
-        // BASE64エンコード結果取得
-        this.imageBase64URI = readerForPreview.result;
-        // 縦幅横幅取得用に格納
-        picElement.src = readerForPreview.result;
-        // BASE64エンコード結果取得
-        this.base64EncodedFile = readerForPreview.result
-          ?.toString()
-          .replace(/data:.*\/.*;base64,/, "");
+        const dataURI = readerForPreview.result?.toString();
+        const index = dataURI?.indexOf(",") as number;
+        this.base64EncodedFile = dataURI?.substring(index + 1);
         this.enableUploadImageFile = true;
         // emit
         this.$emit("captureImage", this.base64EncodedFile, this.extension);
       });
-
-      // // 画像ファイルを圧縮する
-      // const readerForUpload = new FileReader();
-      // const compFile = await ImageUtils.getCompressImageFileAsync(file);
-      // // 圧縮した画像ファイルを読み込む
-      // readerForUpload.readAsDataURL(compFile);
-      // // 読み込み処理(load)が完了するたびに実行されるイベント(関数)を登録
-      // readerForUpload.addEventListener("load", () => {
-      //   // BASE64エンコード結果取得
-      //   this.base64EncodedFile = readerForUpload.result
-      //     ?.toString()
-      //     .replace(/data:.*\/.*;base64,/, "");
-      //   this.enableUploadImageFile = true;
-      //   // emit
-      //   this.$emit("captureImage", this.base64EncodedFile, this.extension);
-      // });
     } else {
-      this.pictureWidth = 0;
-      this.pictureHeight = 0;
       this.imageBase64URI = "";
       this.base64EncodedFile = "";
       this.extension = "";
