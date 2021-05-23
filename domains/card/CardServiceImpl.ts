@@ -16,11 +16,11 @@ export default class CardServiceImpl implements CardService {
         return (await axios.get("/card/tags-names")).data;
     }
 
-    async search(tag: string, freeword: string) {
+    async search(tag: string, name: string) {
         return (await axios.get("/card/search", {
             params: {
                 tag: tag,
-                freeword: freeword
+                name: name
             }
         })).data
     }

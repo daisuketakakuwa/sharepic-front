@@ -10,6 +10,6 @@ export default interface CardService {
     getTagsAndNames(): Promise<CardForSearch>;
     getCardsForHome(): Promise<CardForHome[]>;
     getCardsForAccount(): Promise<CardForAccount>;
-    search(tag: string, freeword: string): Promise<Card[]>;
+    search(tag: string, name: string): Promise<Card[]>;
 
 }

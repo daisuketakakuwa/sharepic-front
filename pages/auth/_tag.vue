@@ -76,10 +76,8 @@ export default class Search extends Vue {
   async fetch() {
     this.cardService = await ServiceFactory.getCardService();
     const tagsnames: CardForSearch = await this.cardService.getTagsAndNames();
-    this.tags = tagsnames.tags;
-    this.names = tagsnames.names;
-    this.tags.push("※未指定");
-    this.names.push("※未指定");
+    this.tags = [""].concat(tagsnames.tags);
+    this.names = [""].concat(tagsnames.names);
 
     // routerから「タグ」がわたってきている場合、タグで検索処理を実行する
     if (this.$route.params.tag !== "_tag") {
@@ -110,7 +108,7 @@ export default class Search extends Vue {
 
 <style scoped>
 .font {
-  font-family: Bradley Hand ITC;
-  font-weight: 900;
+  font-family: "Courier New";
+  font-weight: 600;
 }
 </style>

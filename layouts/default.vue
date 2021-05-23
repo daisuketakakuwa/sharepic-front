@@ -10,14 +10,18 @@
       <v-container>
         <v-row>
           <v-col cols="6">
-            <h1 class="font header">
+            <h1 class="mt-1 font header">
               SHAREPIC
             </h1>
           </v-col>
           <v-col v-if="loggedIn" cols="6">
             <h3 class="font ml-16">
-              <v-btn color="black" class="white--text mb-2" @click="logout"
-                >LOGOUT</v-btn
+              <v-btn
+                color="black"
+                class="white--text mt-2 mb-2"
+                @click="logout"
+              >
+                <v-icon>mdi-logout</v-icon> LOGOUT</v-btn
               >
             </h3>
           </v-col>
@@ -59,7 +63,8 @@ export default class Default extends Vue {
 
 <style scoped>
 .font {
-  font-family: Bradley Hand ITC;
+  font-family: "Courier New";
+  font-weight: 100;
 }
 
 .header {

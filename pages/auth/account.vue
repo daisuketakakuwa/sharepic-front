@@ -108,8 +108,8 @@ export default class Account extends Vue {
 
 <style scoped>
 .font {
-  font-family: Bradley Hand ITC;
-  font-weight: 900;
+  font-family: "Courier New";
+  font-weight: 700;
 }
 
 .coming-soon {
