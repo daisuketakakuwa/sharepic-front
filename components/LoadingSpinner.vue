@@ -1,15 +1,12 @@
 <template>
-  <div v-show="syncedImageUploading" class="loader"></div>
+  <div class="loader"></div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, PropSync } from "nuxt-property-decorator";
+import { Vue, Component } from "nuxt-property-decorator";
 
 @Component
-export default class LoadingSpinner extends Vue {
-  @PropSync("imageUploading", { type: Boolean, default: false })
-  syncedImageUploading!: boolean;
-}
+export default class LoadingSpinner extends Vue {}
 </script>
 
 <style scoped>
@@ -20,8 +17,8 @@ export default class LoadingSpinner extends Vue {
   height: 10em;
 }
 .loader {
-  margin: 60px auto;
-  font-size: 10px;
+  margin: 2px auto;
+  font-size: 4px;
   position: relative;
   text-indent: -9999em;
   border-top: 1.1em solid rgba(255, 255, 255, 0.2);

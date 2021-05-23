@@ -17,14 +17,21 @@
           :src="imageBase64URI"
           contain
         />
-        <loading-spinner :image-uploading="imageUploading" />
-        <span
+
+        <div
+          v-if="imageUploading"
+          class="d-flex flex-wrap align-center  text-center"
+        >
+          <loading-spinner />
+          <span>画像ファイルを圧縮中です......</span>
+        </div>
+
+        <div
           class="text-center"
           v-if="!imageUploading && !enableUploadImageFile"
         >
-          ※こちらに写真が表示されます。<br />
-          ※高画質の写真の表示には数秒かかります。</span
-        >
+          ※こちらに写真が表示されます。
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -72,21 +79,28 @@ export default class ImageForm extends Vue {
         }
       });
 
-      const fr = new FileReader();
+      // プレビュー用の写真を読み込む
+      const readerForPreview = new FileReader();
+      readerForPreview.readAsDataURL(file);
+      readerForPreview.addEventListener("load", () => {
+        // BASE64エンコード結果取得
+        this.imageBase64URI = readerForPreview.result;
+        // 縦幅横幅取得用に格納
+        picElement.src = readerForPreview.result;
+      });
+
       // 画像ファイルを圧縮する
+      const readerForUpload = new FileReader();
       const compFile = await ImageUtils.getCompressImageFileAsync(file);
       // 圧縮した画像ファイルを読み込む
-      fr.readAsDataURL(compFile);
+      readerForUpload.readAsDataURL(compFile);
       // 読み込み処理(load)が完了するたびに実行されるイベント(関数)を登録
-      fr.addEventListener("load", () => {
+      readerForUpload.addEventListener("load", () => {
         // BASE64エンコード結果取得
-        this.imageBase64URI = fr.result;
-        this.base64EncodedFile = fr.result
+        this.base64EncodedFile = readerForUpload.result
           ?.toString()
           .replace(/data:.*\/.*;base64,/, "");
         this.enableUploadImageFile = true;
-        // 縦幅横幅取得用に格納
-        picElement.src = fr.result;
         // emit
         this.$emit("captureImage", this.base64EncodedFile, this.extension);
       });
